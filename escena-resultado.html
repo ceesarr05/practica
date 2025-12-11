@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Escena 6: Showroom "Bright White" - Estilo Diurno</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    
+    <style>
+        body {
+            background-color: #F0F0F0; /* Fondo de carga claro */
+            margin: 0; 
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <a-scene 
+        background="color: #ECECEC"
+        renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true;" 
+        shadow="type: pcfsoft; autoUpdate: true" 
+        physics="gravity: -9.8; debug: false">
+        
+        <a-assets>
+            <a-asset-item id="kvrcModel" src="assets/models/kvrc.glb"></a-asset-item>
+        </a-assets>
+        
+        <a-entity id="room-structure">
+            <a-box position="0 12 0" width="50" height="0.5" depth="50" 
+                   color="#FFFFFF" roughness="0.5" metalness="0.1"></a-box>
+
+            <a-box position="0 6 -15" width="50" height="12" depth="1" 
+                   color="#FFFFFF" roughness="0.3" metalness="0.1" shadow="receive: true"></a-box>
+            
+            <a-entity position="0 0 -0.4">
+                <a-box position="-8 5 -15" width="1" height="10" depth="1.2" color="#DDDDDD"></a-box>
+                <a-box position="-7.45 5 -15" width="0.1" height="10" depth="1.3" color="#88CCFF" emissive="#88CCFF" emissive-intensity="0.5"></a-box>
+                <a-box position="8 5 -15" width="1" height="10" depth="1.2" color="#DDDDDD"></a-box>
+                <a-box position="7.45 5 -15" width="0.1" height="10" depth="1.3" color="#88CCFF" emissive="#88CCFF" emissive-intensity="0.5"></a-box>
+            </a-entity>
+
+            <a-box position="-25 6 0" width="1" height="12" depth="50" 
+                   color="#F5F5F5" roughness="0.5" shadow="receive: true"></a-box>
+            <a-box position="25 6 0" width="1" height="12" depth="50" 
+                   color="#F5F5F5" roughness="0.5" shadow="receive: true"></a-box>
+
+            <a-box position="0 6 25" width="50" height="12" depth="1" 
+                   color="#F5F5F5" roughness="0.5" shadow="receive: true"></a-box>
+        </a-entity>
+
+
+        <a-plane position="0 0.01 0" rotation="-90 0 0" width="50" height="50" 
+                 color="#FFFFFF" 
+                 roughness="0.05" 
+                 metalness="0.4" 
+                 shadow="receive: true" 
+                 static-body="shape: hull">
+        </a-plane> 
+
+        <a-cylinder position="0 0.2 0" radius="4.5" height="0.3"
+                    color="#EEEEEE" metalness="0.2" roughness="0.1"
+                    shadow="receive: true" static-body="shape: hull">
+        </a-cylinder>
+        <a-torus position="0 0.35 0" rotation="90 0 0" radius="4.5" radius-tubular="0.05"
+                 color="#999999" metalness="0.8" roughness="0.2">
+        </a-torus>
+
+        <a-entity light="type: ambient; color: #FFFFFF; intensity: 0.7"></a-entity>
+
+        <a-entity light="type: directional; color: #FFF; intensity: 1.2; castShadow: true; shadowMapHeight: 2048; shadowMapWidth: 2048" 
+                  position="-5 10 8"></a-entity>
+                  
+        <a-entity light="type: point; color: #DDF; intensity: 0.5; distance: 20" position="5 5 -5"></a-entity>
+
+
+        <a-entity id="coche-3d" position="0 0.85 0" 
+                  animation="property: rotation; to: 0 360 0; loop: true; dur: 25000; easing: linear">
+            <a-box class="coche-parte" position="0 0.3 0" width="1.2" height="0.3" depth="2.8" color="#FF0000" shadow="cast: true" roughness="0.2" metalness="0.8"></a-box>
+            <a-box class="coche-parte" position="0 0.5 1.0" width="1.0" height="0.2" depth="0.8" color="#FF0000" shadow="cast: true" roughness="0.2" metalness="0.8"></a-box> 
+            <a-box class="coche-parte" position="0 0.5 -1.0" width="1.0" height="0.2" depth="0.8" color="#FF0000" shadow="cast: true" roughness="0.2" metalness="0.8"></a-box>
+            <a-box class="coche-parte" position="0 0.8 0" width="1.0" height="0.6" depth="1.2" color="#FF0000" shadow="cast: true" roughness="0.2" metalness="0.8"></a-box>
+            <a-box class="coche-parte" position="0 1.1 0" width="1.0" height="0.05" depth="1.2" color="#FF0000" shadow="cast: true" roughness="0.2" metalness="0.8"></a-box>
+            
+            <a-plane class="coche-cristal" position="0 0.9 0.6" rotation="0 0 0" width="0.9" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+            <a-plane class="coche-cristal" position="0 0.9 -0.6" rotation="0 180 0" width="0.9" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+            <a-plane class="coche-cristal" position="0.55 0.9 0" rotation="0 90 0" width="1.2" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+            <a-plane class="coche-cristal" position="-0.55 0.9 0" rotation="0 -90 0" width="1.2" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+            
+            <a-entity class="coche-rueda" position="0.6 0.15 1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111" shadow="cast: true"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#DDD" position="0 0.005 0"></a-cylinder></a-entity>
+            <a-entity class="coche-rueda" position="-0.6 0.15 1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111" shadow="cast: true"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#DDD" position="0 0.005 0"></a-cylinder></a-entity>
+            <a-entity class="coche-rueda" position="0.6 0.15 -1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111" shadow="cast: true"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#DDD" position="0 0.005 0"></a-cylinder></a-entity>
+            <a-entity class="coche-rueda" position="-0.6 0.15 -1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111" shadow="cast: true"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#DDD" position="0 0.005 0"></a-cylinder></a-entity>
+            
+            <a-sphere position="0.4 0.45 1.4" radius="0.08" color="#FFFFCC"></a-sphere><a-sphere position="-0.4 0.45 1.4" radius="0.08" color="#FFFFCC"></a-sphere>
+            <a-box position="0.4 0.45 -1.4" width="0.15" height="0.1" depth="0.05" color="#CC0000"></a-box><a-box position="-0.4 0.45 -1.4" width="0.15" height="0.1" depth="0.05" color="#CC0000"></a-box>
+            <a-cylinder position="0 0.8 0.4" radius="0.15" height="0.03" rotation="90 0 0" color="#333"></a-cylinder>
+            <a-box position="0 0.6 0.1" width="0.5" height="0.4" depth="0.4" color="#555"></a-box>
+        </a-entity>
+
+        <a-entity position="7 0 0" rotation="0 -90 0">
+            <a-cylinder position="0 1 0.1" radius="0.05" height="2" color="#AAA" metalness="0.5"></a-cylinder>
+            
+            <a-entity position="0 2.2 0">
+                <a-plane color="#FFFFFF" opacity="0.9" width="6" height="3.5" border="color: #333" shadow="cast: true"></a-plane>
+                
+                <a-text value="ESPECIFICACIONES DEL VEHÍCULO" align="center" position="0 1.5 0.1" width="7" color="#333333"></a-text>
+                
+                <a-text id="coche-modelo" value="Modelo: Cargando..." position="-2.8 0.7 0.1" width="7" color="#000000"></a-text>
+                <a-text id="coche-color" value="Color: Cargando..." position="-2.8 0.2 0.1" width="7" color="#444444"></a-text>
+                <a-text id="coche-dimensiones" value="Dimensiones (VR): Cargando..." position="-2.8 -0.3 0.1" width="7" color="#444444"></a-text>
+                
+                <a-plane position="0 -1.5 0.1" width="3" height="0.7" color="#333333" class="clickable" onclick="reiniciar()"
+                         animation__hover="property: color; to: #000; startEvents: mouseenter; dur: 200"
+                         animation__leave="property: color; to: #333; startEvents: mouseleave; dur: 200">
+                    <a-text value="REINICIAR SISTEMA" align="center" width="3" color="white"></a-text>
+                </a-plane>
+            </a-entity>
+        </a-entity>
+
+        <!-- Imágenes de coches en fila -->
+        <a-image id="coche6" src="assets/models/coche6.jpeg" position="-8 2.5 -14.4" width="4" height="4"></a-image>
+        <a-image id="coche7" src="assets/models/coche7.png" position="-4 2.5 -14.4" width="4" height="4"></a-image>
+        <a-image id="coche8" src="assets/models/coche8.jpg" position="0 2.5 -14.4" width="4" height="4"></a-image>
+        <a-image id="coche9" src="assets/models/coche9.jpg" position="4 2.5 -14.4" width="4" height="4"></a-image>
+        <a-image id="coche10" src="assets/models/coche10.png" position="8 2.5 -14.4" width="4" height="4"></a-image>
+
+        <!-- KVRC model -->
+        <a-entity id="kvrc" gltf-model="#kvrcModel" position="6 1.8 -5" rotation="0 -60 0" scale="0.7 0.7 0.7" shadow="cast: true"></a-entity>
+
+        <a-entity
+            id="rig" 
+            movement-controls="speed: 0.2; controls: keyboard"
+            kinematic-body="mass: 5; shape: capsule; height: 1.8; radius: 0.3"
+            position="0 0 9">
+            
+            <a-camera position="0 1.6 0" look-controls> 
+                <a-cursor color="black" scale="0.8 0.8 0.8"></a-cursor>
+            </a-camera>
+        </a-entity>
+
+    </a-scene>
+
+    <script>
+        const coches = [
+            { modelo: "Lamborghini Huracán Evo", colorHex: "#FF0000", colorName: "Rojo Brillante", dimensiones: "2.8m largo x 1.2m ancho" },
+            { modelo: "Skoda Octavia RS", colorHex: "#0000FF", colorName: "Azul Oscuro", dimensiones: "2.5m largo x 1.0m ancho" },
+            { modelo: "Rolls Royce Phantom", colorHex: "#FFFFFF", colorName: "Blanco Perla", dimensiones: "3.5m largo x 1.4m ancho" },
+            { modelo: "Aston Martin DB11", colorHex: "#800080", colorName: "Púrpura Oscuro", dimensiones: "2.9m largo x 1.3m ancho" },
+            { modelo: "Cadillac Escalade", colorHex: "#404040", colorName: "Gris Oscuro", dimensiones: "3.2m largo x 1.5m ancho" },
+            { modelo: "Peugeot 508 PSE", colorHex: "#008000", colorName: "Verde Esmeralda", dimensiones: "2.6m largo x 1.1m ancho" },
+            { modelo: "Lexus LC 500", colorHex: "#FFD700", colorName: "Dorado", dimensiones: "2.8m largo x 1.2m ancho" }
+        ];
+
+        let indiceCocheActual = 0;
+
+        function actualizarCoche() {
+            const cocheActual = coches[indiceCocheActual];
+            document.getElementById('coche-modelo').setAttribute('value', `Modelo: ${cocheActual.modelo}`);
+            document.getElementById('coche-color').setAttribute('value', `Color: ${cocheActual.colorName}`);
+            document.getElementById('coche-dimensiones').setAttribute('value', `Dimensiones (VR): ${cocheActual.dimensiones}`);
+
+            const partesCoche = document.querySelectorAll('#coche-3d .coche-parte');
+            partesCoche.forEach(parte => {
+                parte.setAttribute('color', cocheActual.colorHex);
+                // Mantenemos un brillo realista
+                parte.setAttribute('roughness', '0.2');
+                parte.setAttribute('metalness', '0.7');
+            });
+            indiceCocheActual = (indiceCocheActual + 1) % coches.length;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            actualizarCoche();
+            setInterval(actualizarCoche, 5000);
+            
+            const dataString = localStorage.getItem('ot_data');
+            if (dataString) {
+                const data = JSON.parse(dataString);
+                const segundos = ((Date.now() - data.inicio) / 1000).toFixed(2);
+                console.log(`Tiempo de ciclo anterior: ${segundos} s`);
+            }
+        });
+
+        function reiniciar() {
+            localStorage.clear();
+            window.location.href = 'index.html'; 
+        }
+    </script>
+</body>
+</html>

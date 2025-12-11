@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Escena 2: Taller Compacto e Interactivo</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+</head>
+<body>
+    <a-scene physics="gravity: -9.8; debug: false" shadow="type: pcfsoft">
+        <a-assets>
+            <img id="parquet-texture" src="assets/textures/flat-stone.jpg">
+            <!-- Ejemplo: referencia a un .glb existente en el proyecto -->
+            <a-asset-item id="mesaModel" src="assets/models/work_table_blue_low_poly.glb"></a-asset-item>
+            <a-asset-item id="wheelModel" src="assets/models/free_wheel.glb"></a-asset-item>
+            <a-asset-item id="extinguisherModel" src="assets/models/powder_fire_extinguisher_low_poly.glb"></a-asset-item>
+            <a-asset-item id="coneModel" src="assets/models/traffic_cone_3d_model_pbr_textured.glb"></a-asset-item>
+            <a-asset-item id="robotModel" src="assets/models/abb_articulated_robot_irb_4600.glb"></a-asset-item>
+            <a-asset-item id="cartModel" src="assets/models/tool_cart_low_poly.glb"></a-asset-item>
+            <a-asset-item id="wrenchModel2" src="assets/models/wrench.glb"></a-asset-item>
+            <a-asset-item id="drillModel" src="assets/models/low_poly_drill.glb"></a-asset-item>
+            <a-asset-item id="screwdriverModel" src="assets/models/screwdriver.glb"></a-asset-item>
+            <a-asset-item id="hammerModel" src="assets/models/fantasy_hammer.glb"></a-asset-item>
+            <a-asset-item id="toolboxModel" src="assets/models/rusty_toolbox.glb"></a-asset-item>
+            <a-asset-item id="oldRadioModel" src="assets/models/old_radio.glb"></a-asset-item>
+            <audio id="carFail" src="assets/sounds/mixkit-failed-car-ignition-1540.wav"></audio>
+            <audio id="camelaSong" src="assets/sounds/camela_lagrimas.mp3"></audio>
+        </a-assets>
+
+        <a-entity movement-controls="speed: 0.1" position="3 1.6 3"> 
+            <a-entity camera look-controls>
+                <a-cursor color="yellow"></a-cursor>
+            </a-entity>
+            <a-sphere visible="false" radius="0.5" position="0 -0.5 0" static-body></a-sphere>
+        </a-entity>
+
+        <a-plane rotation="-90 0 0" width="15" height="15" material="src: #parquet-texture; repeat: 8 8;" static-body shadow="receive: true"></a-plane>
+        
+        <a-entity id="factory-room">
+            <a-plane position="0 6 0" rotation="90 0 0" width="15" height="15" color="#EEE" shadow="receive: true"></a-plane>
+            <a-plane position="0 3 -7.5" width="15" height="6" color="#AAA" shadow="receive: true"></a-plane>
+
+            <!-- Botón en la pared trasera: hace navegación a escena-resultado.html -->
+            <a-entity id="boton-pared-root" position="0 3 -7.5" rotation="0 0 0">
+                <a-box id="boton-pared" position="0 0 0" width="1.2" height="0.5" depth="0.05" color="#0a7"
+                       animation__hover="property: components.material.material.color; type: color; to: #0c9; startEvents: mouseenter; dur: 150"
+                       animation__leave="property: components.material.material.color; type: color; to: #0a7; startEvents: mouseleave; dur: 150"
+                       onclick="window.location.href='escena-resultado.html'"
+                       shadow="cast: true">
+                </a-box>
+                <a-text value="Ver Resultado" align="center" position="0 0 0.06" color="#ffffff" width="1.4"></a-text>
+            </a-entity>
+            <a-plane position="0 3 7.5" rotation="0 180 0" width="15" height="6" color="#AAA" shadow="receive: true"></a-plane>
+            <a-plane position="-7.5 3 0" rotation="0 90 0" width="15" height="6" color="#CCC" shadow="receive: true"></a-plane>
+            <a-plane position="7.5 3 0" rotation="0 -90 0" width="15" height="6" color="#CCC" shadow="receive: true"></a-plane>
+        </a-entity>
+
+        <a-entity light="type: ambient; intensity: 0.4"></a-entity>
+        <a-entity light="type: spot; castShadow: true; intensity: 1.0; angle: 45; penumbra: 0.3" position="0 5 0" target="#elevador"></a-entity>
+        <a-entity light="type: point; intensity: 0.5; distance: 8" position="5 4 -5"></a-entity>
+
+        
+        
+        <a-entity id="elevador" position="0 0 0">
+            <a-cylinder id="piston-izq" position="-1 0.5 0" radius="0.1" height="1" color="#444" shadow="cast: true"></a-cylinder>
+            <a-cylinder id="piston-der" position="1 0.5 0" radius="0.1" height="1" color="#444" shadow="cast: true"></a-cylinder>
+            <a-box id="plataforma" position="0 1 0" width="2.5" height="0.1" depth="3.5" color="#777" static-body shadow="cast: true"></a-box>
+            <a-box position="-1 0.05 0" width="0.5" height="0.1" depth="0.5" color="#555" static-body></a-box>
+            <a-box position="1 0.05 0" width="0.5" height="0.1" depth="0.5" color="#555" static-body></a-box>
+
+            <a-entity id="conducible-car" position="0 1.15 0" proximity-sound="soundSelector: #carSound; distance: 3; cooldown: 3000"> 
+                <a-entity id="carSound" sound="src: #carFail; positional: true; autoplay: false; maxDistance: 12; volume: 1"></a-entity>
+                <a-box position="0 0.3 0" width="1.2" height="0.3" depth="2.8" color="#3366FF" shadow="cast: true"></a-box>
+                <a-box position="0 0.5 1.0" width="1.0" height="0.2" depth="0.8" color="#3366FF" shadow="cast: true"></a-box>
+                <a-box position="0 0.5 -1.0" width="1.0" height="0.2" depth="0.8" color="#3366FF" shadow="cast: true"></a-box>
+                <a-box position="0 0.8 0" width="1.0" height="0.6" depth="1.2" color="#3366FF" shadow="cast: true"></a-box>
+                <a-box position="0 1.1 0" width="1.0" height="0.05" depth="1.2" color="#3366FF" shadow="cast: true"></a-box>
+                <a-plane position="0 0.9 0.6" rotation="0 0 0" width="0.9" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+                <a-plane position="0 0.9 -0.6" rotation="0 180 0" width="0.9" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+                <a-plane position="0.55 0.9 0" rotation="0 90 0" width="1.2" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+                <a-plane position="-0.55 0.9 0" rotation="0 -90 0" width="1.2" height="0.5" color="#88CCFF" opacity="0.4" side="double" shadow="cast: true"></a-plane> 
+                <a-entity position="0.6 0.15 1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#AAA" position="0 0.005 0"></a-cylinder></a-entity>
+                <a-entity position="-0.6 0.15 1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#AAA" position="0 0.005 0"></a-cylinder></a-entity>
+                <a-entity position="0.6 0.15 -1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#AAA" position="0 0.005 0"></a-cylinder></a-entity>
+                <a-entity position="-0.6 0.15 -1.0"><a-cylinder radius="0.2" height="0.15" rotation="90 0 0" color="#111"></a-cylinder><a-cylinder radius="0.12" height="0.16" rotation="90 0 0" color="#AAA" position="0 0.005 0"></a-cylinder></a-entity>
+                <a-sphere position="0.4 0.45 1.4" radius="0.08" color="yellow"></a-sphere><a-sphere position="-0.4 0.45 1.4" radius="0.08" color="yellow"></a-sphere>
+                <a-box position="0.4 0.45 -1.4" width="0.15" height="0.1" depth="0.05" color="red"></a-box><a-box position="-0.4 0.45 -1.4" width="0.15" height="0.1" depth="0.05" color="red"></a-box>
+                <a-cylinder position="0 0.8 0.4" radius="0.15" height="0.03" rotation="90 0 0" color="#333"></a-cylinder>
+                <a-box position="0 0.6 0.1" width="0.5" height="0.4" depth="0.4" color="#555"></a-box>
+            </a-entity>
+        </a-entity>
+
+        <a-box position="2.5 0.5 2" width="0.1" height="1" depth="0.5" color="#333" shadow="cast: true"></a-box>
+        <a-box id="boton-elevador" position="2.55 0.6 2" width="0.05" height="0.2" depth="0.2" color="green" 
+               onclick="moverElevador()"
+               animation__hover="property: components.material.material.color; type: color; to: #0C0; startEvents: mouseenter; dur: 200"
+               animation__leave="property: components.material.material.color; type: color; to: green; startEvents: mouseleave; dur: 200"
+               >
+            <a-text value="SUBIR / BAJAR" align="center" position="0 0 0.05" width="2" color="white"></a-text>
+        </a-box>
+        
+        
+        <!-- Mesa antigua y objetos asociados eliminados -->
+
+        <a-box position="-5 1.5 -5" width="3" height="3" depth="0.2" color="#777" shadow="cast: true"></a-box>
+        <a-box position="-5 1.5 -5" width="2.8" height="0.1" depth="0.3" color="#555" shadow="cast: true"></a-box>
+        <a-box position="-5 0.5 -5" width="2.8" height="0.1" depth="0.3" color="#555" shadow="cast: true"></a-box>
+        <a-box position="-5 2.5 -5" width="2.8" height="0.1" depth="0.3" color="#555" shadow="cast: true"></a-box>
+
+        <!-- Bloques rojo/azul/verde eliminados -->
+        
+
+        <!-- Imagen de ejemplo colocada dentro de la escena -->
+        <a-image id="coche1" src="assets/models/coche1.jpeg" position="-5 1.5 -7.45" width="2" height="2"></a-image>
+        <!-- Otras imágenes de coches añadidas junto a la original (lista para colocar) -->
+        <a-image id="coche2" src="assets/models/coche2.jpg" position="-3 1.5 -7.45" width="2" height="2"></a-image>
+        <a-image id="coche3" src="assets/models/coche3.jpg" position="-1 1.5 -7.45" width="2" height="2"></a-image>
+        <a-image id="coche4" src="assets/models/coche4.webp" position="1 1.5 -7.45" width="2" height="2"></a-image>
+        <a-image id="coche5" src="assets/models/coche5.jpeg" position="3 1.5 -7.45" width="2" height="2"></a-image>
+           <!-- Collider invisible para la mesa (se usa para física) -->
+           <a-box id="mesaCollider" position="5 0.4 -5" width="2" height="0.9" depth="1" material="opacity:0; transparent:true" static-body></a-box>
+
+           <!-- Mesa nueva en la ubicación de la mesa antigua; id para referenciarla desde JS -->
+           <a-entity id="mesaNueva" gltf-model="#mesaModel" position="5 0 -5" rotation="0 0 0" scale="1 1 1" shadow="cast: true" proximity-sound="soundSelector: #camelaMesaSound; distance: 3; cooldown: 3000">
+               <a-entity id="camelaMesaSound" sound="src: #camelaSong; positional: true; autoplay: false; volume: 0.8"></a-entity>
+           </a-entity>
+
+           <!-- Rueda nueva colocada al lado de la imagen -->
+           <a-entity id="ruedaNueva" gltf-model="#wheelModel" position="1.6 0 0" rotation="0 0 0" scale="0.5 0.5 0.5" shadow="cast: true"></a-entity>
+
+           <!-- Extintor colocado sobre la mesa (restaurado a su posición original) -->
+           <a-entity id="extintor" gltf-model="#extinguisherModel" position="5.15 0.48 -5" rotation="0 90 0" scale="0.6 0.6 0.6" shadow="cast: true" proximity-sound="soundSelector: #camelaExtSound; distance: 3; cooldown: 3000">
+               <a-entity id="camelaExtSound" sound="src: #camelaSong; positional: true; autoplay: false; volume: 0.8"></a-entity>
+           </a-entity>
+
+           <!-- Rusty toolbox placed on the table near the extinguisher (restored to original size) -->
+           <a-entity id="rustyToolbox" gltf-model="#toolboxModel" position="4.55 0.90 -4.90" rotation="0 45 0" scale="0.13 0.13 0.13" shadow="cast: true"></a-entity>
+
+           <!-- Taladro colocado sobre la mesa, junto al extintor (más pequeño y ligeramente desplazado) -->
+           <a-entity id="drill" gltf-model="#drillModel" position="-5.6 0.5 -4.80" rotation="0 90 0" scale="0.3 0.3 0.3" shadow="cast: true"></a-entity>
+
+           <!-- Destornillador colocado cerca del taladro (más pequeño; punta hacia abajo) -->
+           <a-entity id="screwdriver" gltf-model="#screwdriverModel" position="-4 2 -4.90" rotation="90 0 0" scale="0.005 0.005 0.005" shadow="cast: true"></a-entity>
+
+           <!-- Wrench placed next to the extinguisher -->
+           <a-entity id="wrenchNearExt" gltf-model="#wrenchModel2" position="-5 0.5 -4.83" rotation="0 169 -50" scale="1 1 1" shadow="cast: true"></a-entity>
+
+           <!-- Fantasy hammer placed on the new table near the extinguisher -->
+           <a-entity id="fantasyHammer" gltf-model="#hammerModel" position="-5 1.50 -4.90" rotation="0 0 17" scale="0.02 0.02 0.02" shadow="cast: true"></a-entity>
+
+           <!-- Old radio placed next to the desk for user placement -->
+           <a-entity id="oldRadio" gltf-model="#oldRadioModel" position="4.80 0.45 -5.00" rotation="0 0 0" scale="0.02 0.02 0.02" shadow="cast: true"></a-entity>
+
+           <!-- Cono de tráfico colocado a la izquierda del coche (espacio amplio) -->
+           <a-entity id="conoTraffic" gltf-model="#coneModel" position="-2 -0 -2" rotation="0 90 0" scale="0.8 0.8 0.8" shadow="cast: true"></a-entity>
+           <!-- Robot ABB colocado junto a los conos -->
+           <a-entity id="robotABB" gltf-model="#robotModel" position="-2.6 0 3" rotation="0 90 0" scale="0.85 0.85 0.85" shadow="cast: true"></a-entity>
+           <!-- Carro de herramientas colocado cerca de los conos -->
+           <a-entity id="toolCart" gltf-model="#cartModel" position="2 0 0.2" rotation="0 90 0" scale="0.9 0.9 0.9" shadow="cast: true"></a-entity>
+
+    </a-scene>
+
+    <!-- Enlace rápido a la escena de resultado -->
+    <div style="position:fixed; left:16px; bottom:16px; z-index:9999;">
+        <a href="escena-resultado.html" style="background:#222;color:#fff;padding:8px 12px;border-radius:6px;text-decoration:none;font-family:Arial, sans-serif;">Ir a escena resultado</a>
+    </div>
+
+    <script>
+        // Estado del elevador: true = Arriba, false = Abajo
+        let elevadorArriba = false;
+        
+        // Entidades
+        const plataforma = document.getElementById('plataforma');
+        const pistonIzq = document.getElementById('piston-izq');
+        const pistonDer = document.getElementById('piston-der');
+        const coche = document.getElementById('conducible-car');
+
+        // Posiciones
+        const ALTURA_ABAJO_PLATAFORMA = 1.0;
+        const ALTURA_ARRIBA_PLATAFORMA = 2.5; 
+        const ALTURA_ABAJO_PISTON = 0.5;
+        const ALTURA_ARRIBA_PISTON = 1.25; 
+        const ALTURA_ABAJO_COCHE = 1.15; 
+        const ALTURA_ARRIBA_COCHE = 2.65; 
+        const DURACION = 1500; // 1.5 segundos
+
+        function moverElevador() {
+            // Determinar las posiciones de destino
+            const targetPlataformaY = elevadorArriba ? ALTURA_ABAJO_PLATAFORMA : ALTURA_ARRIBA_PLATAFORMA;
+            const targetPistonHeight = elevadorArriba ? 1 : 2.5; // La altura del cilindro
+            const targetPistonY = elevadorArriba ? ALTURA_ABAJO_PISTON : ALTURA_ARRIBA_PISTON; // Posición Y del pistón
+            const targetCocheY = elevadorArriba ? ALTURA_ABAJO_COCHE : ALTURA_ARRIBA_COCHE;
+
+            // Animación de la Plataforma (y el coche, que es hijo de la plataforma)
+            plataforma.setAttribute('animation', {
+                property: 'position',
+                to: `0 ${targetPlataformaY} 0`,
+                dur: DURACION,
+                easing: 'easeInOutQuad'
+            });
+
+            // Animación de los Pistones (Ajustamos altura y posición Y)
+            pistonIzq.setAttribute('animation__height', {
+                property: 'height',
+                to: targetPistonHeight,
+                dur: DURACION,
+                easing: 'easeInOutQuad'
+            });
+            pistonIzq.setAttribute('animation__y', {
+                property: 'position',
+                to: `-1 ${targetPistonY} 0`,
+                dur: DURACION,
+                easing: 'easeInOutQuad'
+            });
+
+            pistonDer.setAttribute('animation__height', {
+                property: 'height',
+                to: targetPistonHeight,
+                dur: DURACION,
+                easing: 'easeInOutQuad'
+            });
+            pistonDer.setAttribute('animation__y', {
+                property: 'position',
+                to: `1 ${targetPistonY} 0`,
+                dur: DURACION,
+                easing: 'easeInOutQuad'
+            });
+            
+            // Animación del coche (Aunque es hijo de la plataforma, le damos una animación para sincronizar)
+            // Ya que el coche está en posición local de la plataforma, ajustaremos la posición Y del coche RELATIVA al elevador
+            coche.setAttribute('animation', {
+                property: 'position',
+                to: `0 ${targetCocheY} 0`, 
+                dur: DURACION,
+                easing: 'easeInOutQuad'
+            });
+
+            // Cambiar el estado del elevador para el siguiente clic
+            elevadorArriba = !elevadorArriba;
+        }
+        
+        // Componente que reproduce un sonido posicional cuando la cámara
+        // se acerca a la entidad objetivo. Se puede configurar la distancia
+        // y un cooldown para evitar reproducciones continuas.
+        AFRAME.registerComponent('proximity-sound', {
+            schema: {
+                soundSelector: { type: 'selector' },
+                distance: { type: 'number', default: 3 },
+                cooldown: { type: 'number', default: 3000 }
+            },
+            init: function () {
+                this.cameraEl = document.querySelector('[camera]');
+                this.lastPlay = 0;
+                this.targetPos = new THREE.Vector3();
+                this.cameraPos = new THREE.Vector3();
+                // Resolve sound element (if selector provided or look for child [sound])
+                this.soundEl = this.data.soundSelector || this.el.querySelector('[sound]');
+            },
+            tick: function (time, delta) {
+                if (!this.cameraEl || !this.soundEl) return;
+                this.el.object3D.getWorldPosition(this.targetPos);
+                this.cameraEl.object3D.getWorldPosition(this.cameraPos);
+                const dist = this.targetPos.distanceTo(this.cameraPos);
+                if (dist <= this.data.distance && (time - this.lastPlay) > this.data.cooldown) {
+                    const soundComp = this.soundEl.components && this.soundEl.components.sound;
+                    if (soundComp && typeof soundComp.playSound === 'function') {
+                        soundComp.playSound();
+                        this.lastPlay = time;
+                    }
+                }
+            }
+        });
+
+        </script>
+</body>
+</html>

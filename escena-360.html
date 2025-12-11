@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Escena 1: Lobby con Coche Giratorio y Hombre con Traje (Versión Corregida)</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <a-assets>
+            <img id="sky-texture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
+            <img id="parquet-texture" src="https://cdn.glitch.global/0b8e9766-3d2b-4200-a61f-d232a9333333/parquet-marron.jpg?v=1700670000000"> 
+            
+            <a-asset-item id="hombre-traje" src="https://cdn.rawgit.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMan/glTF/CesiumMan.gltf"></a-asset-item>
+        </a-assets>
+
+        <a-entity position="0 1.6 0">
+            <a-camera wasd-controls-enabled="false" look-controls>
+                <a-cursor color="cyan" fuse="true" fuseTimeout="1500"></a-cursor>
+            </a-camera>
+        </a-entity>
+
+        <a-light type="ambient" color="#BBB"></a-light>
+        <a-light type="directional" position="0 4 2" intensity="0.5"></a-light>
+        <a-light type="point" position="0 5 0" intensity="0.8" color="#FFF"></a-light>
+
+        <a-entity id="room">
+            <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" material="src: #parquet-texture; repeat: 8 8;"></a-plane>
+            <a-plane position="0 6 0" rotation="90 0 0" width="20" height="20" color="#EEE"></a-plane>
+            <a-plane position="0 3 -10" width="20" height="6" color="#AAA"></a-plane>
+            <a-plane position="0 3 10" rotation="0 180 0" width="20" height="6" color="#AAA"></a-plane>
+            <a-plane position="-10 3 0" rotation="0 90 0" width="20" height="6" color="#CCC"></a-plane>
+            <a-plane position="10 3 0" rotation="0 -90 0" width="20" height="6" color="#CCC"></a-plane>
+        </a-entity>
+        
+        <a-entity position="0 3 -9.9" scale="2 2 2">
+            <a-plane color="#000" opacity="0.7" width="3" height="1"></a-plane>
+            <a-text value="CLICK PARA SIGUIENTE SALA" align="center" width="3" position="0 0.2 0.1" color="#FFF"></a-text>
+            <a-box position="0 -0.2 0.1" width="1.5" height="0.4" depth="0.1" color="#4CC3D9"
+                    animation__enter="property: scale; to: 1.1 1.1 1.1; startEvents: mouseenter; dur: 200"
+                    animation__leave="property: scale; to: 1 1 1; startEvents: mouseleave; dur: 200"
+                    onclick="iniciarSimulacion()">
+                <a-text value="CONTINUAR" align="center" position="0 0 0.06" scale="0.5 0.5 0.5"></a-text>
+            </a-box>
+        </a-entity>
+
+        <a-entity position="9.9 3 -3" rotation="0 -90 0">
+            <a-plane color="#D00" width="4" height="2"></a-plane>
+            <a-plane color="#FFF" width="3.8" height="1.8" position="0 0 0.01"></a-plane>
+            <a-text value="SEGURIDAD\nANTE TODO" color="#D00" align="center" width="10" position="0 0.3 0.1"></a-text>
+            <a-text value="Uso obligatorio de casco" color="#000" align="center" width="6" position="0 -0.3 0.1"></a-text>
+        </a-entity>
+        <a-entity position="9.9 3 3" rotation="0 -90 0">
+            <a-plane color="#005" width="4" height="2"></a-plane>
+            <a-plane color="#FFF" width="3.8" height="1.8" position="0 0 0.01"></a-plane>
+            <a-text value="OBJETIVO DIARIO" color="#005" align="center" width="10" position="0 0.3 0.1"></a-text>
+            <a-text value="500 Unidades" color="#0A0" align="center" width="12" position="0 -0.2 0.1"></a-text>
+        </a-entity>
+        
+        <a-entity id="coche" position="5 0 -5" rotation="0 45 0"
+                  animation="property: rotation; to: 0 405 0; dur: 15000; easing: linear; loop: true;">
+            <a-cylinder position="0 0.05 0" radius="3" height="0.1" color="#555"></a-cylinder> 
+            <a-box position="0 0.5 0" width="4" height="0.6" depth="1.8" color="#4CC3D9"></a-box> 
+            <a-box position="0 1.2 0" width="2" height="0.6" depth="1.5" color="#4CC3D9"></a-box> 
+            <a-box position="0 1.2 0" width="2" height="0.5" depth="1.4" color="#111" opacity="0.8"></a-box> 
+            <a-cylinder position="-1.5 0.25 0.95" radius="0.25" height="0.15" rotation="90 0 0" color="#111"></a-cylinder>
+            <a-cylinder position="-1.5 0.25 -0.95" radius="0.25" height="0.15" rotation="90 0 0" color="#111"></a-cylinder>
+            <a-cylinder position="1.5 0.25 0.95" radius="0.25" height="0.15" rotation="90 0 0" color="#111"></a-cylinder>
+            <a-cylinder position="1.5 0.25 -0.95" radius="0.25" height="0.15" rotation="90 0 0" color="#111"></a-cylinder>
+            <a-plane position="-2.0 0.6 0.5" rotation="0 90 0" width="0.3" height="0.2" color="yellow"></a-plane>
+            <a-plane position="-2.0 0.6 -0.5" rotation="0 90 0" width="0.3" height="0.2" color="yellow"></a-plane>
+        </a-entity>
+
+        <a-entity position="8 0 8" rotation="0 -135 0" id="supervisor-robot">
+            <a-entity class="monitor"> 
+                <a-entity id="robot-cuerpo" animation="property: position; to: 0 0.1 0; dir: alternate; dur: 2000; loop: true">
+                    <a-cylinder position="0 1.5 0" height="1.2" radius="0.5" color="#555"></a-cylinder>
+                    <a-sphere position="0 2.3 0" radius="0.4" color="#EEE"></a-sphere>
+                    <a-sphere position="-0.15 2.4 0.3" radius="0.08" color="#0FF"></a-sphere>
+                    <a-sphere position="0.15 2.4 0.3" radius="0.08" color="#0FF"></a-sphere>
+                    <a-cylinder position="0 2.8 0" height="0.5" radius="0.02" color="#888"></a-cylinder>
+                    <a-sphere id="robot-luz" position="0 3.1 0" radius="0.05" color="#00FFFF"
+                                animation="property: components.material.material.color; type: color; to: #500; dir: alternate; dur: 500; loop: true"></a-sphere>
+                    <a-text id="robot-texto" value="CARGANDO DATOS..." align="center" color="#000000" position="0 3.3 0.4" side="double" width="7"></a-text>
+                </a-entity>
+            </a-entity>
+            <a-cylinder position="0 0.1 0" height="0.2" radius="0.7" color="#222"></a-cylinder>
+        </a-entity>
+
+        <a-entity position="-5 0 -5">
+            <a-plane position="-2.5 0.01 -2.5" rotation="-90 0 0" width="5" height="5" color="#8B4513"></a-plane>
+            <a-plane position="-2.5 1.5 0" width="5" height="3" color="#88CCFF" opacity="0.3" side="double"></a-plane>
+            <a-box position="-2.5 1.5 0" width="5" height="0.1" depth="0.1" color="#555"></a-box> 
+            <a-box position="0 1.5 0" width="0.2" height="3" depth="0.2" color="#555"></a-box> 
+            <a-plane position="0 1.5 -2.5" rotation="0 90 0" width="5" height="3" color="#88CCFF" opacity="0.3" side="double"></a-plane>
+            <a-box position="-2.5 3.2 0" width="3" height="0.5" depth="0.1" color="#222"></a-box>
+            <a-text value="OFICINA TECNICA" position="-2.5 3.2 0.1" align="center" color="white"></a-text>
+
+            <a-box position="-2.5 0.8 -2.5" width="2" height="0.1" depth="1" color="White"></a-box> 
+            <a-box position="-3.4 0.4 -2.5" width="0.1" height="0.8" depth="1" color="#AAA"></a-box> 
+            <a-box position="-1.6 0.4 -2.5" width="0.1" height="0.8" depth="1" color="#AAA"></a-box> 
+            <a-box position="-2.5 0.9 -2.8" width="0.6" height="0.4" depth="0.05" color="#111"></a-box> 
+            <a-plane position="-2.5 0.9 -2.77" width="0.55" height="0.35" color="blue" shader="flat"></a-plane> 
+            <a-box position="-2.5 0.86 -2.5" width="0.4" height="0.02" depth="0.2" color="#333"></a-box> 
+            <a-cylinder position="-2.5 0.5 -1.8" radius="0.3" height="0.1" color="#333"></a-cylinder> 
+            <a-box position="-2.5 0.9 -1.5" width="0.5" height="0.6" depth="0.1" color="#333"></a-box> 
+            <a-cylinder position="-2.5 0.25 -1.8" radius="0.05" height="0.5" color="#777"></a-cylinder> 
+            <a-light type="point" position="-2.5 2.5 -2.5" intensity="0.5" distance="5" color="#FFA"></a-light>
+            
+            <a-gltf-model src="#hombre-traje" position="-3.5 0 -2.5" rotation="0 180 0" scale="0.8 0.8 0.8"></a-gltf-model>
+        </a-entity>
+
+    </a-scene>
+
+    <script>
+        // Array de 7 coches (sin cambios)
+        const coches = [
+            { modelo: "Lamborghini Huracán Evo", colorName: "Rojo Brillante", dimensiones: "2.8m largo x 1.2m ancho" },
+            { modelo: "Skoda Octavia RS", colorName: "Azul Oscuro", dimensiones: "2.5m largo x 1.0m ancho" },
+            { modelo: "Rolls Royce Cullinan", colorName: "Negro Metálico", dimensiones: "3.5m largo x 1.6m ancho" },
+            { modelo: "Aston Martin DB11", colorName: "Verde Inglés", dimensiones: "2.9m largo x 1.3m ancho" },
+            { modelo: "Cadillac Escalade", colorName: "Blanco Perla", dimensiones: "3.7m largo x 1.8m ancho" },
+            { modelo: "Peugeot 308 GT", colorName: "Gris Platino", dimensiones: "2.4m largo x 1.1m ancho" },
+            { modelo: "Lexus NX 450h+", colorName: "Amarillo Cáncer (Dorado)", dimensiones: "3.0m largo x 1.4m ancho" }
+        ];
+
+        let indiceCocheActual = -1;
+        
+        // Función de navegación (sin cambios)
+        function iniciarSimulacion() {
+            clearInterval(cicloAutomatico);
+            const datosProduccion = { inicio: Date.now(), piezas: 0, estado: 'EN_PROCESO' };
+            localStorage.setItem('ot_data', JSON.stringify(datosProduccion));
+            window.location.href = 'escena-proceso.html'; 
+        }
+
+        // Función para avanzar al siguiente coche y actualizar el robot (sin cambios)
+        function actualizarInfoCoche() {
+            const textoRobot = document.getElementById('robot-texto');
+            const luzRobot = document.getElementById('robot-luz');
+            indiceCocheActual = (indiceCocheActual + 1) % coches.length;
+            const cocheActual = coches[indiceCocheActual];
+            const info = `PEDIDO EN PRODUCCIÓN (${indiceCocheActual + 1}/${coches.length})\nMODELO: ${cocheActual.modelo}\nCOLOR: ${cocheActual.colorName}\nDIMENSIONES: ${cocheActual.dimensiones}`;
+            textoRobot.setAttribute('value', info);
+            textoRobot.setAttribute('wrap-count', 30);
+            textoRobot.setAttribute('width', 7); 
+            textoRobot.setAttribute('color', '#000000'); 
+            textoRobot.setAttribute('position', '0 3.3 0.4'); 
+            luzRobot.setAttribute('color', '#00FFFF'); 
+        }
+
+        // 4. Iniciar el ciclo automático al cargar la página cada 4 segundos
+        actualizarInfoCoche();
+        const cicloAutomatico = setInterval(actualizarInfoCoche, 4000); 
+    </script>
+</body>
+</html>
